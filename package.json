@@ -52,7 +52,7 @@
     "lint:types": "attw --profile esm-only --pack .",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",
-    "release": "pnpm run build && pnpm publish --no-git-checks && changeset tag"
+    "release": "pnpm run build && pnpm publish --no-git-checks --tag next && changeset tag"
   },
   "dependencies": {
     "zod": "^4.6.7"
