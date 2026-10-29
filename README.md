@@ -135,20 +135,14 @@ Each email on the list has one **waitlist entry**, with one of four statuses:
 - **registered**: the invite was used to create an account. A registered entry never admits again.
 - **rejected**: refused.
 
-```mermaid
-stateDiagram-v2
-    direction LR
-    [*] --> pending: join
-    [*] --> approved: invite directly
-    pending --> approved: approve / invite directly
-    rejected --> approved: approve / invite directly
-    pending --> rejected: reject
-    approved --> rejected: reject
-    approved --> pending: requeue
-    rejected --> pending: requeue
-    approved --> registered: sign up with the invite
-    registered --> [*]
-```
+| Action                  | From                         | To           |
+| ----------------------- | ---------------------------- | ------------ |
+| Join                    | (new)                        | `pending`    |
+| Approve                 | `pending`, `rejected`        | `approved`   |
+| Invite directly         | (new), `pending`, `rejected` | `approved`   |
+| Reject                  | `pending`, `approved`        | `rejected`   |
+| Requeue                 | `approved`, `rejected`       | `pending`    |
+| Sign up with the invite | `approved`                   | `registered` |
 
 Joining sends a **status link** (`sendStatusLink`) to the email. Opening it confirms the inbox and shows the position. A direct invite (`admin.invite`) creates an approved entry straight away.
 
