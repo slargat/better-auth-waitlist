@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, build and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (Oxlint) and format (Oxfmt)
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build (vp pack + publint + client-graph and declaration checks)
+        run: pnpm build
+
+      - name: Publint (packed tarball)
+        run: pnpm lint:package
+
+      - name: Are the types wrong (packed tarball)
+        run: pnpm lint:types
+
+  postgres:
+    name: Test (postgres)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres: &postgres-service
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: better_auth
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d better_auth"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - &postgres-test
+        name: Test (postgres)
+        run: pnpm test:postgres
+        env:
+          WAITLIST_TEST_DATABASE_URL: postgres://user:password@localhost:5432/better_auth
+
+  # Both test suites on the Better Auth peer range: the 1.7.0 floor and the latest 1.7.x.
+  better-auth-range:
+    name: Test on better-auth ${{ matrix.better-auth }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        better-auth: ["1.7.0", "~1.7.0"]
+    services:
+      postgres: *postgres-service
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Use better-auth ${{ matrix.better-auth }}
+        env:
+          RANGE: ${{ matrix.better-auth }}
+        run: |
+          resolve() {
+            npm view "$1@$RANGE" version --json | jq -r 'if type == "array" then .[] else . end' | sort -V | tail -n 1
+          }
+          ba=$(resolve better-auth)
+          core=$(resolve @better-auth/core)
+          echo "better-auth@$RANGE -> $ba, @better-auth/core@$RANGE -> $core"
+          test -n "$ba" && test "$ba" = "$core"
+          pnpm add -D -E "better-auth@$ba" "@better-auth/core@$ba"
+          installed=$(pnpm list better-auth @better-auth/core --json \
+            | jq -r '.[0].devDependencies | [.["better-auth"].version, .["@better-auth/core"].version] | join(" ")')
+          if [ "$installed" != "$ba $ba" ]; then
+            echo "::error::expected better-auth and @better-auth/core $ba, got: $installed"
+            exit 1
+          fi
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - *postgres-test

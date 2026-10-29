@@ -1,28 +1,22 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"jsx": "react-jsx",
-		// Enable latest features
-		"lib": ["ESNext", "DOM"],
-		"moduleDetection": "force",
-		"module": "ESNext",
-
-		// Bundler mode
-		"moduleResolution": "bundler",
-		"allowJs": true,
-
-		// Best practices
-		"strict": true,
-		"noFallthroughCasesInSwitch": true,
-
-		"noPropertyAccessFromIndexSignature": false,
-		// Some stricter flags (disabled by default)
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"declaration": true,
-		"verbatimModuleSyntax": true,
-		"skipLibCheck": true
-	},
-	"include": ["./src/**/*"],
-	"exclude": ["dist", "build.ts"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "types": ["node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true
+  },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist"]
 }

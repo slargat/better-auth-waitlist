@@ -1,60 +1,22 @@
-// HTTP Status Codes (extracted from stoker to remove dependency)
-export const HTTP_STATUS_CODES = {
-	OK: 200,
-	CREATED: 201,
-	UNAUTHORIZED: 401,
-	FORBIDDEN: 403,
-	NOT_FOUND: 404,
-	UNPROCESSABLE_ENTITY: 422,
-	TOO_MANY_REQUESTS: 429,
-} as const;
+import { defineErrorCodes } from "@better-auth/core/utils/error-codes"
 
-export const HTTP_STATUS_CODE_MESSAGES = {
-	[HTTP_STATUS_CODES.OK]: "OK",
-	[HTTP_STATUS_CODES.CREATED]: "Created",
-	[HTTP_STATUS_CODES.UNAUTHORIZED]: "Unauthorized",
-	[HTTP_STATUS_CODES.FORBIDDEN]: "Forbidden",
-	[HTTP_STATUS_CODES.NOT_FOUND]: "Not Found",
-	[HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY]: "Unprocessable Entity",
-	[HTTP_STATUS_CODES.TOO_MANY_REQUESTS]: "Too Many Requests",
-} as const;
+/**
+ * Every error the plugin can return. Messages are short phrases
+ * with no punctuation so they survive OAuth's `split(" ").join("_")` encoding.
+ *
+ * Shared by the server and `./client`, so this module imports nothing but
+ * `defineErrorCodes`. The server's `APIError` helper is in `errors.ts`.
+ */
+export const WAITLIST_ERROR_CODES = defineErrorCodes({
+  WAITLIST_INVITE_REQUIRED: "Waitlist invite required",
+  INVALID_INVITE_CODE: "Invalid or expired invite code",
+  WAITLIST_CLOSED: "Waitlist is closed",
+  WAITLIST_FULL: "Waitlist is full",
+  EMAIL_NOT_ALLOWED: "Email not allowed",
+  INVALID_STATUS_TOKEN: "Invalid status link",
+  INVALID_STATUS_TRANSITION: "Invalid waitlist status transition",
+  ENTRY_NOT_FOUND: "Waitlist entry not found",
+  NOT_ALLOWED_TO_MANAGE_WAITLIST: "Not allowed to manage the waitlist",
+})
 
-export const WAITLIST_ERROR_CODES = {
-	// Entry validation errors
-	EMAIL_ALREADY_IN_WAITLIST: "email_already_in_waitlist",
-	DOMAIN_NOT_ALLOWED: "domain_not_allowed",
-	INVALID_ENTRY: "invalid_entry",
-
-	// Capacity and limits
-	WAITLIST_FULL: "waitlist_full",
-	RATE_LIMIT_EXCEEDED: "rate_limit_exceeded",
-
-	// Configuration errors
-	WAITLIST_NOT_ENABLED: "waitlist_not_enabled",
-
-	// Authorization errors
-	UNAUTHORIZED: "unauthorized",
-
-	// Permission errors
-	FORBIDDEN: "permission_denied",
-
-	// Data errors
-	WAITLIST_ENTRY_NOT_FOUND: "waitlist_entry_not_found",
-} as const;
-
-export const WAITLIST_ERROR_MESSAGES = {
-	[WAITLIST_ERROR_CODES.EMAIL_ALREADY_IN_WAITLIST]: "Email already in waitlist",
-	[WAITLIST_ERROR_CODES.DOMAIN_NOT_ALLOWED]: "Email domain not allowed",
-	[WAITLIST_ERROR_CODES.INVALID_ENTRY]: "Invalid entry data",
-	[WAITLIST_ERROR_CODES.WAITLIST_FULL]: "Waitlist is full",
-	[WAITLIST_ERROR_CODES.RATE_LIMIT_EXCEEDED]:
-		"Too many requests, please try again later",
-	[WAITLIST_ERROR_CODES.WAITLIST_NOT_ENABLED]: "Waitlist is not enabled",
-	[WAITLIST_ERROR_CODES.UNAUTHORIZED]:
-		"You are not authorized to perform this action",
-	[WAITLIST_ERROR_CODES.FORBIDDEN]:
-		"Not enough permissions to perform this action",
-	[WAITLIST_ERROR_CODES.WAITLIST_ENTRY_NOT_FOUND]: "Waitlist entry not found",
-} as const;
-
-export type WaitlistErrorCode = keyof typeof WAITLIST_ERROR_CODES;
+export type WaitlistErrorCode = keyof typeof WAITLIST_ERROR_CODES
