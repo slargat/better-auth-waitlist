@@ -247,13 +247,11 @@ Callback errors are logged with the request's credentials redacted (passwords, c
 
 ```sh
 pnpm install
-pnpm build                # vp pack (tsdown, ESM only) + publint --strict + client-graph and declaration checks
+pnpm build                # vp pack (tsdown, ESM only; writes package.json exports, runs publint --strict and attw) + client-graph and declaration checks
 pnpm typecheck            # tsc --noEmit
 pnpm test                 # vp test (unit + *.test-d.ts type tests)
 pnpm test:postgres:local  # the Postgres suites against a throwaway postgres:16 container (needs Docker)
 pnpm lint                 # vp lint (Oxlint) + vp fmt --check (Oxfmt)
-pnpm lint:package         # publint --strict on the packed tarball
-pnpm lint:types           # attw --profile esm-only
 ```
 
 Lint, format, build and test settings all live in [`vite.config.ts`](./vite.config.ts). The Postgres suites are the `postgres` test project; `pnpm test:postgres` runs them against `WAITLIST_TEST_DATABASE_URL`.

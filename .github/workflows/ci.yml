@@ -44,14 +44,8 @@ jobs:
       - name: Test
         run: pnpm test
 
-      - name: Build (vp pack + publint + client-graph and declaration checks)
+      - name: Build (vp pack + exports, publint, attw + client-graph and declaration checks)
         run: pnpm build
-
-      - name: Publint (packed tarball)
-        run: pnpm lint:package
-
-      - name: Are the types wrong (packed tarball)
-        run: pnpm lint:types
 
   postgres:
     name: Test (postgres)
