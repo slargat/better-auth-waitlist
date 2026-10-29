@@ -6,7 +6,7 @@ Read before changing code:
 
 - [`CONTEXT.md`](./CONTEXT.md): the glossary. Use its terms in code, tests, issues and PRs.
 - [`CODING_STANDARDS.md`](./CODING_STANDARDS.md): the enforceable rules (gating, data model, endpoints, tests, package hygiene).
-- [`README.md`](./README.md): the documented behaviour and options.
+- [`README.md`](./README.md): the documented behaviour and options. [`CONTRIBUTING.md`](./CONTRIBUTING.md): development and release workflow.
 
 ## Commands
 
