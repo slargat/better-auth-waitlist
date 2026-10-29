@@ -69,52 +69,21 @@ import { waitlistClient } from "better-auth-waitlist/client"
 export const authClient = createAuthClient({ plugins: [waitlistClient()] })
 ```
 
-### 4. Build three pages
+### 4. Wire up the flow
 
-**Join page.** Show the same "check your inbox" screen whatever happens, so the page never reveals whether an email is already on the list or already has an account (the email itself tells the person).
+The plugin has no UI. Your app calls the client from three places:
 
-```ts
-import { isWaitlistError, WAITLIST_ERROR_CODES } from "better-auth-waitlist/client"
+1. **Join**: `authClient.waitlist.join({ email })` adds the email and sends the status link.
+2. **Status link**: `confirm` and `status` with the link's token show the person's place in line and their share link.
+3. **Invite link**: `invite.accept({ code })` checks the code; then any Better Auth sign-up method creates the account for the invited email.
 
-const ref = new URLSearchParams(location.search).get("ref") ?? undefined
-const { error } = await authClient.waitlist.join({ email, referralCode: ref })
-if (isWaitlistError(error)) showMessage(WAITLIST_ERROR_CODES[error.code].message)
-else showCheckYourInbox()
-```
+Approve people with `authClient.waitlist.admin.approve(...)` from your admin UI, or `auth.api.approveWaitlistEntries(...)` from server code. Sign-up is now invite-only.
 
-Only `WAITLIST_CLOSED`, `WAITLIST_FULL` and `EMAIL_NOT_ALLOWED` need their own message: they never depend on who the email belongs to.
-
-**Status page** (the `statusLink.buildUrl` URL). Confirm the entry, then show the position and the share link.
-
-```ts
-const token = new URLSearchParams(location.search).get("token") ?? ""
-await authClient.waitlist.confirm({ token }) // a POST, and idempotent
-const { data, error } = await authClient.waitlist.status({ query: { token } })
-if (error?.code === "INVALID_STATUS_TOKEN") showBadLink()
-else if (data) {
-  showPosition(data.position, data.queueLength) // position is null once approved
-  showShareLink(`${location.origin}/join?ref=${data.referralCode}`, data.referralCount)
-}
-```
-
-**Register page** (the `invite.buildUrl` URL). Check the code before showing the form, and lock the email field to the invited address.
-
-```ts
-import { getRedirectError } from "better-auth-waitlist/client"
-
-const code = new URLSearchParams(location.search).get("code") ?? ""
-const { data } = await authClient.waitlist.invite.accept({ code })
-if (!data?.valid) showInvalidInvite()
-else showSignUpForm({ email: data.email, emailLocked: true }) // any sign-up method works from here
-
-// Back from an OAuth or magic-link sign-up that was refused:
-const refused = getRedirectError(location.search) // "WAITLIST_INVITE_REQUIRED" | "INVALID_INVITE_CODE" | null
-```
-
-That's it: sign-up is now invite-only. Approve people from your admin UI (see [Managing the waitlist](./docs/managing.md)) with `authClient.waitlist.admin.approve(...)`, or from a job with `auth.api.approveWaitlistEntries(...)`.
+See [Building the pages](./docs/pages.md) for complete examples.
 
 ## Documentation
 
+- [Building the pages](./docs/pages.md): join, status and register pages.
 - [How it works](./docs/how-it-works.md): entry statuses and transitions.
 - [Managing the waitlist](./docs/managing.md): managers, approving, invites.
 - [The sign-up gate](./docs/sign-up-gate.md): admission, refusals per sign-up method, bypasses, Guests.
