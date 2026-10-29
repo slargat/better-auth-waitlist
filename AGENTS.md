@@ -16,9 +16,7 @@ pnpm lint                 # vp lint (Oxlint, type-aware) + vp fmt --check (Oxfmt
 pnpm typecheck            # tsc --noEmit
 pnpm test                 # unit + *.test-d.ts type tests (Vitest project "unit")
 pnpm test:postgres:local  # Postgres suites in a throwaway Docker container (Vitest project "postgres")
-pnpm build                # vp pack (tsdown) + client-graph and declaration checks
-pnpm lint:package         # publint on the packed tarball
-pnpm lint:types           # attw
+pnpm build                # vp pack (tsdown: writes package.json exports, runs publint and attw) + client-graph and declaration checks
 ```
 
 Lint, format, pack and test config all live in `vite.config.ts`. Import test APIs from `vite-plus/test`.

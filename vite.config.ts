@@ -16,8 +16,13 @@ export default defineConfig({
     treeshake: true,
     fixedExtension: true,
     define: versionDefine(),
+    exports: { legacy: true },
     publint: {
       strict: true,
+    },
+    attw: {
+      profile: "esm-only",
+      level: "error",
     },
   },
   lint: {
