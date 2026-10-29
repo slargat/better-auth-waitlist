@@ -1,7 +1,7 @@
 {
   "name": "better-auth-waitlist",
   "version": "4.0.0-beta.0",
-  "description": "Better Auth plugin that gates sign-up behind a waitlist",
+  "description": "A complete waitlist for Better Auth: a live queue, status links, referrals, invites and invite-only sign-up",
   "author": "Seifeddine Largat",
   "license": "MIT",
   "repository": {

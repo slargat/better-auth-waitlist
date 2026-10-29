@@ -3,13 +3,14 @@
 [![npm](https://img.shields.io/npm/v/better-auth-waitlist)](https://www.npmjs.com/package/better-auth-waitlist)
 [![license](https://img.shields.io/npm/l/better-auth-waitlist)](./LICENSE)
 
-A [Better Auth](https://better-auth.com) plugin that puts sign-up behind a waitlist. People join, you approve them (or invite them directly), and only invited emails can create an account. Sign-in for existing users is never affected.
+A complete waitlist for your [Better Auth](https://better-auth.com) app. People join, follow their place in line, bring friends with their referral link, and get an invite when you let them in.
 
-- **One gate for every sign-up method**: email and password, OAuth (redirect, ID token, One Tap), magic link, email OTP, anonymous, `admin.createUser`.
-- **Single-use invite codes**, bound to one email, hashed at rest, with an expiry. The code survives OAuth and magic-link redirects.
-- **Status links** showing the queue position, sent by email and confirmed with a POST so mail scanners can't confirm.
+- **A real queue**: every entry has a live position, and you can boost people up the line.
+- **Status links**, emailed on join, showing the person's place in line and their share link.
 - **Referrals** with share links, self-referral detection and a success callback for your rewards.
-- **Manager endpoints** to list, approve (by id or "next N"), reject, requeue, boost, invite and delete, gated by the admin plugin's roles or your own check.
+- **Invites**: approve people one by one or "next 50", or invite someone directly. Each invite is a single-use code bound to one email, with an expiry.
+- **Manager tools** to list, search, approve, reject, requeue, boost and delete entries, gated by the admin plugin's roles or your own check.
+- **Invite-only sign-up** while the waitlist is on, across every sign-up method (email and password, OAuth, One Tap, magic link, email OTP, anonymous). Existing users keep signing in as usual.
 - **No email enumeration**: join, refusals and timing look the same whether an email is new, pending, rejected or already a user.
 - **Typed, tiny client** (about 2 kB gzipped). No server code, zod or `better-call` reaches the browser.
 - Adapter-agnostic, ESM only, Better Auth `^1.7.0`.
