@@ -1,6 +1,6 @@
 {
   "name": "better-auth-waitlist",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0",
   "description": "A complete waitlist for Better Auth: a live queue, status links, referrals, invites and invite-only sign-up",
   "author": "Seifeddine Largat",
   "license": "MIT",
