@@ -2,7 +2,7 @@
 
 Glossary for `better-auth-waitlist`, a Better Auth plugin that gates **account creation** behind a waitlist. It is a generic, published library: it knows nothing about what a host application does with its users. Read this before adding terms to issues, PRs or code. If your change conflicts with a definition here, update the definition in the same PR.
 
-Behaviour: the [README](./README.md). Implementation rules: [`CODING_STANDARDS.md`](./CODING_STANDARDS.md).
+Behaviour: the [README](./README.md) and [`docs/`](./docs). Implementation rules: [`CODING_STANDARDS.md`](./CODING_STANDARDS.md).
 
 ## Terms
 
