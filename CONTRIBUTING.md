@@ -1,6 +1,6 @@
 # Contributing
 
-Read [`CONTEXT.md`](./CONTEXT.md) (the vocabulary) and [`CODING_STANDARDS.md`](./CODING_STANDARDS.md) (the rules every change keeps) first. The [README](./README.md) is the documented behaviour: update it in the same PR as a behaviour change.
+Read [`CONTEXT.md`](./CONTEXT.md) (the vocabulary) and [`CODING_STANDARDS.md`](./CODING_STANDARDS.md) (the rules every change keeps) first. The [README](./README.md) and [`docs/`](./docs) are the documented behaviour: update them in the same PR as a behaviour change.
 
 ## Development
 
