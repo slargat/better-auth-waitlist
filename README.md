@@ -88,6 +88,7 @@ See [Building the pages](./docs/pages.md) for complete examples.
 - [Managing the waitlist](./docs/managing.md): managers, approving, invites.
 - [The sign-up gate](./docs/sign-up-gate.md): admission, refusals per sign-up method, bypasses, Guests.
 - [Referrals](./docs/referrals.md): share links, success callback, rewards.
+- [API reference](./docs/api-reference.md): every endpoint's parameters, response and errors, the entry type and error codes.
 - [Client API](./docs/client-api.md): every endpoint, helpers, error codes, extra join fields.
 - [Options](./docs/options.md): every option and callback with its default.
 - [Production checklist](./docs/production-checklist.md)

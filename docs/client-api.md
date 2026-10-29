@@ -1,6 +1,6 @@
 # Client API
 
-`waitlistClient()` adds `authClient.waitlist`, typed from the server plugin. Every client call has a server equivalent on `auth.api`.
+`waitlistClient()` adds `authClient.waitlist`, typed from the server plugin. Every client call has a server equivalent on `auth.api`. Parameters and responses are in the [API reference](./api-reference.md).
 
 | Client (`authClient.waitlist.*`) | Server (`auth.api.*`)    | Who                          |
 | -------------------------------- | ------------------------ | ---------------------------- |
