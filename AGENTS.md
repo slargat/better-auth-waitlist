@@ -27,5 +27,5 @@ Lint, format, pack and test config all live in `vite.config.ts`. Import test API
 
 - Branch from `main` and open PRs against `main`.
 - Every user-visible change needs a changeset (`pnpm changeset`). Releases go out through `.github/workflows/release.yml`; never publish by hand.
-- While Changesets is in pre mode (`.changeset/pre.json`), `release` publishes with `--tag next` so prereleases never reach `latest`. When releasing 4.0.0, run `changeset pre exit` and drop `--tag next` in the same PR.
+- While Changesets is in pre mode (`.changeset/pre.json`), `changeset publish` uses the pre tag (`beta`) as the npm dist-tag, so prereleases never reach `latest`. Release 4.0.0 with `changeset pre exit`.
 - Run `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` before pushing.
